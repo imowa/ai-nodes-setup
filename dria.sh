@@ -221,7 +221,7 @@ for row in $WALLETS; do
     environment:
       RUST_LOG: \${RUST_LOG:-none,dkn_compute=info}
       DKN_WALLET_SECRET_KEY: $PRIV
-      DKN_MODELS: llama3.3:70b-instruct-q4_K_M,llama3.1:8b-instruct-q4_K_M,llama3.2:1b-instruct-q4_K_M
+      DKN_MODELS: llama3.3:70b-instruct-q4_K_M,llama3.1:8b-instruct-q4_K_M,llama3.2:1b-instruct-q4_K_M,gemma3:27b
       DKN_P2P_LISTEN_ADDR: /ip4/0.0.0.0/tcp/4001
       OLLAMA_HOST: http://10.172.1.1
       OLLAMA_PORT: 14441
