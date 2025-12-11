@@ -111,7 +111,7 @@ TEST_RESPONSE=$(curl -s -X POST https://api.vikey.ai/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${VIKEY_API_KEY}" \
   -d '{
-    "model": "llama-3.3-70b-instruct",
+    "model": "gemma-3-27b-instruct",
     "max_tokens": 10,
     "n": 1,
     "stream": false,
@@ -160,8 +160,7 @@ console.log(`Generated ${count} wallet(s) saved in wallets.json`);
 EOF
 
 ### 5. Wallet Handling
-cd "$HOME/dria-nodes"
-mkdir -p "$HOME/dria-nodes"
+mkdir -p "$HOME/dria-nodes" && cd "$HOME/dria-nodes"
 
 echo "💰 Wallet setup options:"
 echo "1) Generate new wallet(s)"
@@ -249,14 +248,14 @@ cat > manage-dria.sh <<'EOF'
 #!/bin/bash
 
 get_compose_cmd() {
-  if command -v docker-compose &>/dev/null; then
-    echo "docker-compose"
-  elif docker compose version &>/dev/null; then
-    echo "docker compose"
-  else
-    echo "❌ Neither docker-compose nor docker compose found!" >&2
-    exit 1
-  fi
+if command -v docker-compose &>/dev/null; then
+  echo "docker-compose"
+elif docker compose version &>/dev/null; then
+  echo "docker compose"
+else
+  echo "❌ Neither docker-compose nor docker compose found!" >&2
+  exit 1
+fi
 }
 
 CMD=$1
@@ -277,8 +276,15 @@ case $CMD in
     done
     echo "✅ All nodes attempted to restart."
     ;;
+  logs)
+    echo "👀 Streaming logs for all Dria nodes... (Press Ctrl+C to stop)"
+    for d in dria-node-*/; do
+      echo "--- Logs for $(basename "$d") ---"
+      (cd "$d" && $CMD_COMPOSE logs -f)
+    done
+    ;;
   *)
-    echo "Usage: ./manage-dria.sh [start|restart]"
+    echo "Usage: ./manage-dria.sh [start|restart|logs]"
     ;;
 esac
 EOF
