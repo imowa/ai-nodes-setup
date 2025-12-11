@@ -84,7 +84,7 @@ echo "✅ All dependencies are ready!"
 echo "🔑 Setting up Vikey..."
 cd "$HOME"
 if [ ! -d "vikey-inference" ]; then
-    git clone https://github.com/direkturcrypto/vikey-inference
+    git clone https://github.com/imowa/vikey-inference
 fi
 cd vikey-inference
 
@@ -96,7 +96,7 @@ fi
 cat > .env <<EOF
 # Vikey Inference Configuration
 NODE_PORT=14441
-DEFAULT_MODEL=llama-3.3-70b-instruct
+DEFAULT_MODEL=gemma-3-27b-instruct
 VIKEY_API_KEY=${VIKEY_API_KEY}
 EOF
 
